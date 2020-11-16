@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
  
-from __future__ import division
+
 from common import analyze_channels
 from common import parabolic as parabolic
 from numpy.fft import rfft
@@ -126,7 +126,7 @@ if __name__ == '__main__':
  
         def freq_wrapper(signal, fs):
             freq = freq_from_fft(signal, fs)
-            print '%f Hz' % freq
+            print('%f Hz' % freq)
  
         files = sys.argv[1:]
         if files:
@@ -134,11 +134,11 @@ if __name__ == '__main__':
                 try:
                     start_time = time()
                     analyze_channels(filename, freq_wrapper)
-                    print '\nTime elapsed: %.3f s\n' % (time() - start_time)
+                    print('\nTime elapsed: %.3f s\n' % (time() - start_time))
  
                 except IOError:
-                    print 'Couldn\'t analyze "' + filename + '"\n'
-                print ''
+                    print('Couldn\'t analyze "' + filename + '"\n')
+                print('')
         else:
             sys.exit("You must provide at least one file to analyze")
     except BaseException as e:
@@ -147,4 +147,4 @@ if __name__ == '__main__':
         raise
     finally:
         # Otherwise Windows closes the window too quickly to read
-        raw_input('(Press <Enter> to close)')
+        input('(Press <Enter> to close)')

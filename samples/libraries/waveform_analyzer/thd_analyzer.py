@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
  
-from __future__ import division
+
 from scipy.signal import kaiser
 from numpy.fft import rfft, irfft
 from numpy import argmax, mean, log10, log, ceil, concatenate, zeros
-from common import analyze_channels, rms_flat, parabolic
-from A_weighting import A_weight
+from .common import analyze_channels, rms_flat, parabolic
+from .A_weighting import A_weight
  
  
 def THDN(signal, sample_rate):
@@ -36,7 +36,7 @@ def THDN(signal, sample_rate):
     f = rfft(windowed)
     i = argmax(abs(f))
     true_i = parabolic(log(abs(f)), i)[0]
-    print 'Frequency: %f Hz' % (sample_rate * (true_i / len(windowed)))
+    print('Frequency: %f Hz' % (sample_rate * (true_i / len(windowed))))
  
     # Filter out fundamental by throwing away values ±10%
     lowermin = true_i - 0.1 * true_i
@@ -54,8 +54,8 @@ def THDN(signal, sample_rate):
     weighted = A_weight(noise, sample_rate)
     THDNA = rms_flat(weighted) / total_rms
  
-    print "THD+N:      %.4f%% or %.1f dB"    % (THDN  * 100, 20 * log10(THDN))
-    print "A-weighted: %.4f%% or %.1f dB(A)" % (THDNA * 100, 20 * log10(THDNA))
+    print("THD+N:      %.4f%% or %.1f dB"    % (THDN  * 100, 20 * log10(THDN)))
+    print("A-weighted: %.4f%% or %.1f dB(A)" % (THDNA * 100, 20 * log10(THDNA)))
  
  
 def THD(signal, sample_rate):
@@ -78,9 +78,9 @@ def THD(signal, sample_rate):
     f = rfft(windowed)
     i = argmax(abs(f))
     true_i = parabolic(log(abs(f)), i)[0]
-    print 'Frequency: %f Hz' % (sample_rate * (true_i / len(windowed)))
+    print('Frequency: %f Hz' % (sample_rate * (true_i / len(windowed))))
  
-    print 'fundamental amplitude: %.3f' % abs(f[i])
+    print('fundamental amplitude: %.3f' % abs(f[i]))
  
     # Find the values for the first 15 harmonics.  Includes harmonic peaks
     # only, by definition
@@ -89,10 +89,10 @@ def THD(signal, sample_rate):
     # Instead of limited to 15, figure out how many fit based on f0 and
     # sampling rate and report this "4 harmonics" and list the strength of each
     for x in range(2, 15):
-        print '%.3f' % abs(f[i * x]),
+        print('%.3f' % abs(f[i * x]), end=' ')
  
     THD = sum([abs(f[i*x]) for x in range(2, 15)]) / abs(f[i])
-    print '\nTHD: %f%%' % (THD * 100)
+    print('\nTHD: %f%%' % (THD * 100))
     return
  
 if __name__ == '__main__':
@@ -104,8 +104,8 @@ if __name__ == '__main__':
                 try:
                     analyze_channels(filename, THDN)
                 except IOError:
-                    print 'Couldn\'t analyze "' + filename + '"\n'
-                print ''
+                    print('Couldn\'t analyze "' + filename + '"\n')
+                print('')
         else:
             sys.exit("You must provide at least one file to analyze")
     except BaseException as e:
@@ -114,4 +114,4 @@ if __name__ == '__main__':
         raise
     finally:
         # Otherwise Windows closes the window too quickly to read
-        raw_input('(Press <Enter> to close)')
+        input('(Press <Enter> to close)')

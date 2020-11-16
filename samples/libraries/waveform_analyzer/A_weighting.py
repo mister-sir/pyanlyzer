@@ -18,7 +18,7 @@ needs axis = 0:
 y = lfilter(b, a, x, axis = 0)
 """
  
-from __future__ import division
+
 from numpy import pi, polymul
 from scipy.signal import bilinear, lfilter
  
