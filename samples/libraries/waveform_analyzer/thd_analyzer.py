@@ -26,7 +26,7 @@ def THDN(signal, sample_rate):
     del signal
  
     # Zero pad to nearest power of two
-    new_len = 2**ceil( log(len(windowed)) / log(2) )
+    new_len = int(2**ceil( log(len(windowed)) / log(2) ))
     windowed = concatenate((windowed, zeros(new_len - len(windowed))))
  
     # Measure the total signal before filtering but after windowing
@@ -39,8 +39,8 @@ def THDN(signal, sample_rate):
     print('Frequency: %f Hz' % (sample_rate * (true_i / len(windowed))))
  
     # Filter out fundamental by throwing away values ±10%
-    lowermin = true_i - 0.1 * true_i
-    uppermin = true_i + 0.1 * true_i
+    lowermin = int(true_i - 0.1 * true_i)
+    uppermin = int(true_i + 0.1 * true_i)
     f[lowermin: uppermin] = 0
  
     # Transform noise back into the time domain and measure it
