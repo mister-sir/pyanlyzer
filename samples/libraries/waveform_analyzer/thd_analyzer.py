@@ -51,11 +51,11 @@ def THDN(signal, sample_rate):
  
     # Apply A-weighting to residual noise (Not normally used for distortion,
     # but used to measure dynamic range with -60 dBFS signal, for instance)
-    weighted = A_weight(noise, sample_rate)
-    THDNA = rms_flat(weighted) / total_rms
+    #weighted = A_weight(noise, sample_rate)
+    #THDNA = rms_flat(weighted) / total_rms
  
-    print("THD+N:      %.4f%% or %.1f dB"    % (THDN  * 100, 20 * log10(THDN)))
-    print("A-weighted: %.4f%% or %.1f dB(A)" % (THDNA * 100, 20 * log10(THDNA)))
+    print("THD+N:     %.4f%% or %.1f dB"    % (THDN  * 100, 20 * log10(THDN)))
+    #print("A-weighted: %.4f%% or %.1f dB(A)" % (THDNA * 100, 20 * log10(THDNA)))
  
  
 def THD(signal, sample_rate):

@@ -1,27 +1,30 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
  
-
-try:
-    from scikits.audiolab import Sndfile
-except:
-    print("warning: common.py can't import scikits.audiolab")
+"""
+    Removed the load() function, since the library below can't be found
+    (well, technically I just commented out the function and the library loading, in case we want it later)
+"""
+#try:
+#    from scikits.audiolab import Sndfile
+#except:
+#    print("warning: common.py can't import scikits.audiolab")
  
 from numpy import array_equal, polyfit, sqrt, mean, absolute, log10, arange
 from scipy.stats import gmean
  
  
-def load(filename):
-    """
-    Load a wave file and return the signal, sample rate and number of channels.
- 
-    Can be any format that libsndfile supports, like .wav, .flac, etc.
-    """
-    wave_file = Sndfile(filename, 'r')
-    signal = wave_file.read_frames(wave_file.nframes)
-    channels = wave_file.channels
-    sample_rate = wave_file.samplerate
-    return signal, sample_rate, channels
+#def load(filename):
+#    """
+#    Load a wave file and return the signal, sample rate and number of channels.
+# 
+#    Can be any format that libsndfile supports, like .wav, .flac, etc.
+#    """
+#    wave_file = Sndfile(filename, 'r')
+#    signal = wave_file.read_frames(wave_file.nframes)
+#    channels = wave_file.channels
+#    sample_rate = wave_file.samplerate
+#    return signal, sample_rate, channels
  
  
 def analyze_channels(filename, function):
