@@ -1,4 +1,4 @@
-import pydaqmx # If it's already imported, we're good to go
+import nidaqmx # If it's already imported, we're good to go
 
 class singlechannel:
 	def __init__(self, physical_channel, sample_rate, ICP, number_of_samples, DCcoupling):
@@ -30,14 +30,17 @@ class singlechannel:
 		
 		# Set ICP and coupling mode
 		if ICP:
-			task.ai_channels.all.ai_excit_val = 0.002
-			task.ai_channels.all.ai_coupling = nidaqmx.constants.Coupling.AC # must be AC coupled for ICP
+			self.task.ai_channels.all.ai_excit_val = 0.002
+			self.task.ai_channels.all.ai_coupling = nidaqmx.constants.Coupling.AC # must be AC coupled for ICP
 		else:
-			task.ai_channels.all.ai_excit_val = 0
+			self.task.ai_channels.all.ai_excit_val = 0
 			if self.DCcoupling:
-				task.ai_channels.all.ai_coupling = nidaqmx.constants.Coupling.DC
+				self.task.ai_channels.all.ai_coupling = nidaqmx.constants.Coupling.DC
 			else:
-				task.ai_channels.all.ai_coupling = nidaqmx.constants.Coupling.AC
+				self.task.ai_channels.all.ai_coupling = nidaqmx.constants.Coupling.AC
 	
-	def readData(self):
+	def read(self):
+		return self.task.read(self.N)
+	
+	def readSingle(self):
 		return self.task.read()
