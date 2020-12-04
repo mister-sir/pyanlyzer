@@ -9,7 +9,7 @@ class singlechannel:
 		if not 'ai' in self.name.split('/')[-1]: # if the last slash item in the list isn't analog input
 			raise NotImplementedError("Hm, that doesn't look like an analog input channel")
 		
-		# Cast a bunch of crap, for certainty's sake
+		# Cast a bunch of crap, for the sake of input validation
 		self.SR = int(sample_rate)
 		self.ICP = bool(ICP)
 		self.N = int(number_of_samples)
@@ -30,7 +30,7 @@ class singlechannel:
 		
 		# Set ICP and coupling mode
 		if ICP:
-			self.task.ai_channels.all.ai_excit_val = 0.002
+			self.task.ai_channels.all.ai_excit_val = 0.002 # got this from Chip's code somewhere -- hope it's right!
 			self.task.ai_channels.all.ai_coupling = nidaqmx.constants.Coupling.AC # must be AC coupled for ICP
 		else:
 			self.task.ai_channels.all.ai_excit_val = 0

@@ -11,15 +11,15 @@ This package is currently a bit hard to install -- more to come on that later.
 Here's a simple example. More to come.
 
 ```python
-import modalshop.NIDAQ.singlechannel.singlechannel as daq
+import modalshop.nidaq as daq
 
-myTask = daq(physical_channel="Dev3/ai0", sample_rate=50000, ICP=True, number_of_samples=1000, DCcoupling=False)
+myTask = daq.singlechannel(physical_channel="Dev3/ai0", sample_rate=50000, ICP=True, number_of_samples=1000, DCcoupling=False)
 
 data = myTask.read() # returns a numpy array of volts, I think
 ```
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome. You can also open issues in the bug tracker if you spot an issue.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
