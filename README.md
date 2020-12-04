@@ -1,10 +1,10 @@
-# Pyanalzer
+# modalshop
 
-Pyanalyzer is a python package for doing various data acquision tasks and signal processing using NI DAQmx.
+This package handles data acquisition using NI DAQ hardware such as the PCI-4461 or the USB-4431, among other devices. It also has some rudimentary signal analysis functions in the works.
 
 ## Installation
 
-This package is currently a bit hard to install -- more to come on that later.
+Download the repository and open a command prompt inside it. Run `py -m pip install .`. Currently the module is a little wonky and doens't like to install right. Work in progress, pre-pre-alpha.
 
 ## Usage
 
