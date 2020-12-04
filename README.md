@@ -13,9 +13,9 @@ Here's a simple example. More to come.
 ```python
 import pyanalyzer.nidaq as daq
 
-myTask = daq.singlechannel(physical_channel="Dev3/ai0", sample_rate=50000, ICP=True, number_of_samples=1000, DCcoupling=False)
+myTask = daq.singlechannel(physical_channel="Dev3/ai0", sample_rate=50000, excitation=daq.constants.excitation.ICP , number_of_samples=1000, coupling=daq.constants.coupling.AC)
 
-data = myTask.read() # returns a numpy array of volts, I think
+data = myTask.read() # returns an array of voltage values
 ```
 
 ## Contributing
