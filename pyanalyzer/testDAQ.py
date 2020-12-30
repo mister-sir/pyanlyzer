@@ -1,7 +1,7 @@
 import nidaq as daq
 import time
 
-with daq.singlechannel('Dev2/ai0',48000,daq.constants['excitation']['voltage'],1024,daq.constants['coupling']['AC']) as myDAQ:
-    data = myDAQ.read()
+myDAQ = daq.singlechannel('Dev2/ai0',48000,daq.constants['excitation']['voltage'],1024,daq.constants['coupling']['AC'])
+data = myDAQ.read()
 
-print('Took ' + len(data) + ' datapoints')
+print('Took ' + str(len(data)) + ' datapoints')

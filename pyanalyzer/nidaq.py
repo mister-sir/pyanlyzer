@@ -18,6 +18,9 @@ class singlechannel:
 		self.task.ai_channels.add_ai_voltage_chan(self.name)
 		self.channelsettings(sample_rate,excitation,number_of_samples,coupling) # set up channel (also performs input validation)
 	
+	def __del__(self): # a destructor is required to properly close the task
+		self.task.close()
+	
 	def channelsettings(self, sample_rate=None, excitation=None, number_of_samples=None, coupling=None): # set or change task settings
 		# Check optional arguments (During first use in __init__(), all arguments must be set to `not None` or this will break. See line above)
 		if sample_rate is None:
