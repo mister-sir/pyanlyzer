@@ -15,7 +15,7 @@ import pyanalyzer.nidaq as daq
 
 myTask = daq.singlechannel(physical_channel="Dev3/ai0",excitation=daq.constants['excitation']['voltage'],number_of_samples=1024,coupling=daq.constants['coupling']['AC'])
 
-data = myTask.read() # returns a numpy array of volts, I think
+data = myTask.read() # returns an array of volts, I think
 ```
 
 ## Contributing
