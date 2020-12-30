@@ -1,12 +1,8 @@
 import nidaqmx # If it's already imported, we're good to go
 
-class constants: # Use these constants when calling functions (that way, changes to the underlying code won't break other people's code)
-	class coupling:
-		DC = True
-		AC = False
-	class excitation:
-		ICP = True
-		VOLTAGE = False
+constants = {} # Use these constants when calling functions (that way, changes to the underlying code won't break other people's code)
+constants['coupling'] = {'AC':False,'DC':True}
+constants['excitation'] = {'ICP':True,'voltage':False}
 
 class singlechannel:
 	def __init__(self, physical_channel, sample_rate, excitation, number_of_samples, coupling):
@@ -20,27 +16,27 @@ class singlechannel:
 		# Create the task
 		self.task = nidaqmx.Task()
 		self.task.ai_channels.add_ai_voltage_chan(self.name)
-		self.channelsettings(self.SR,self.ICP,self.N,self.DCcoupling) # set up channel (also performs input validation)
+		self.channelsettings(sample_rate,excitation,number_of_samples,coupling) # set up channel (also performs input validation)
 	
-	def channelsettings(self, sample_rate=None, excitation=None, number_of_samples=None, DCcoupling=None): # set or change task settings
+	def channelsettings(self, sample_rate=None, excitation=None, number_of_samples=None, coupling=None): # set or change task settings
 		# Check optional arguments (During first use in __init__(), all arguments must be set to `not None` or this will break. See line above)
 		if sample_rate is None:
 			sample_rate = self.SR
 		if number_of_samples is None:
 			number_of_samples = self.N
 		if coupling is None:
-			coupling = self.DCcoupling
+			coupling = self.coupling
 		if excitation is None:
-			excitation = self.ICP
+			excitation = self.coupling
 		
 		# Cast a bunch of crap, for the sake of input validation
 		self.SR = int(sample_rate)
-		self.ICP = bool(excitation)
+		self.excitation = bool(excitation)
 		self.N = int(number_of_samples)
-		self.DCcoupling = bool(coupling)
+		self.coupling = bool(coupling)
 		
 		# Let's not get crazy, now
-		if self.ICP and self.DCcoupling:
+		if self.excitation and self.coupling:
 			raise RuntimeError("You can't have DC coupling on with ICP.") # well, you can, but it's weird to
 		if self.N <= 0:
 			raise ValueError("You've got to read a positive number of points, silly goose")
@@ -48,13 +44,13 @@ class singlechannel:
 		# Set clock timing
 		self.task.timing.cfg_samp_clk_timing(self.SR, source="", active_edge=nidaqmx.constants.Edge.RISING,samps_per_chan=self.N)
 		
-		# Set ICP and coupling mode
-		if self.ICP:
+		# Set ICP and coupling mode (a bit funky, should maybe separate into two separate sections, eventually)
+		if self.excitation == constants['excitation']['ICP']: # if we're set to ICP
 			self.task.ai_channels.all.ai_excit_val = 0.002 # got this from Chip's code somewhere -- hope it's right!
 			self.task.ai_channels.all.ai_coupling = nidaqmx.constants.Coupling.AC # must be AC coupled for ICP
 		else:
 			self.task.ai_channels.all.ai_excit_val = 0
-			if self.DCcoupling:
+			if self.coupling == constants['coupling']['DC']:
 				self.task.ai_channels.all.ai_coupling = nidaqmx.constants.Coupling.DC
 			else:
 				self.task.ai_channels.all.ai_coupling = nidaqmx.constants.Coupling.AC
@@ -63,7 +59,7 @@ class singlechannel:
 		if N is None:
 			N = self.N
 		else:
-			if N > self.N
+			if N > self.N:
 				raise ValueError("You cannot set an N value larger than number_of_samples set for the channel")
 			#if N == 1
 			#	raise ValueError("Use readSingle() to read a single point") # I suppose this isn't completely necessary...
@@ -72,7 +68,7 @@ class singlechannel:
 	def readSingle(self):
 		return self.task.read()
 
-class multichannel:
+""" class multichannel:
 	def __init__(self, physical_channel, sample_rate, excitation, number_of_samples, coupling):
 		# Validate (half-assedly) if the name contains a useful physical channel for us
 		self.name = str(physical_channel)
@@ -116,9 +112,9 @@ class multichannel:
 		# Cast a bunch of crap, for the sake of input validation
 		self.SR = int(sample_rate)
 		self.N = int(number_of_samples)
-		for i in range(len(coupling):
+		for i in range(len(coupling)):
 			self.DCcoupling(i) = bool(coupling(i))
-		for i in range(len(excitation):
+		for i in range(len(excitation)):
 			self.ICP(i) = bool(excitation(i))
 		
 		# Let's not get crazy, now
@@ -126,9 +122,9 @@ class multichannel:
 			raise RuntimeError("You can't have DC coupling on with ICP.") # well, you can, but it's weird to
 		if self.N <= 0:
 			raise ValueError("You've got to read a positive number of points, silly goose")
-		if len(ICP) != len(DCcoupling)
+		if len(ICP) != len(DCcoupling):
 			raise ValueError("ICP and DCcoupling should be boolean arrays of the same length!")
-		if len(ICP) != self.Nchannels
+		if len(ICP) != self.Nchannels:
 			raise ValueError("ICP and DCcoupling should have the same number of elements as the number of channels you're using")
 		
 		# Set clock timing
@@ -150,11 +146,11 @@ class multichannel:
 		if N is None:
 			N = self.N
 		else:
-			if N > self.N
+			if N > self.N:
 				raise ValueError("You cannot set an N value larger than number_of_samples set for the channel")
 			#if N == 1
 			#	raise ValueError("Use readSingle() to read a single point") # I suppose this isn't completely necessary...
 		return self.task.read(N)
 	
 	def readSingle(self):
-		return self.task.read()
+		return self.task.read() """
