@@ -1,8 +1,5 @@
 import nidaqmx # If it's already imported, we're good to go
-
-constants = {} # Use these constants when calling functions (that way, changes to the underlying code won't break other people's code)
-constants['coupling'] = {'AC':False,'DC':True}
-constants['excitation'] = {'ICP':True,'voltage':False}
+import NIDAQconstants as constants # constants for coupling and excitation types
 
 class singlechannel:
 	def __init__(self, physical_channel, sample_rate, excitation, number_of_samples, coupling):
@@ -39,7 +36,7 @@ class singlechannel:
 		self.coupling = bool(coupling)
 		
 		# Let's not get crazy, now
-		if self.excitation and self.coupling:
+		if self.excitation==constants.excitation.ICP and self.coupling==constants.coupling.DC:
 			raise RuntimeError("You can't have DC coupling on with ICP.") # well, you can, but it's weird to
 		if self.N <= 0:
 			raise ValueError("You've got to read a positive number of points, silly goose")
@@ -48,12 +45,12 @@ class singlechannel:
 		self.task.timing.cfg_samp_clk_timing(self.SR, source="", active_edge=nidaqmx.constants.Edge.RISING,samps_per_chan=self.N)
 		
 		# Set ICP and coupling mode (a bit funky, should maybe separate into two separate sections, eventually)
-		if self.excitation == constants['excitation']['ICP']: # if we're set to ICP
+		if self.excitation == constants.excitation.ICP: # if we're set to ICP
 			self.task.ai_channels.all.ai_excit_val = 0.002 # got this from Chip's code somewhere -- hope it's right!
 			self.task.ai_channels.all.ai_coupling = nidaqmx.constants.Coupling.AC # must be AC coupled for ICP
 		else:
 			self.task.ai_channels.all.ai_excit_val = 0
-			if self.coupling == constants['coupling']['DC']:
+			if self.coupling == constants.coupling.DC:
 				self.task.ai_channels.all.ai_coupling = nidaqmx.constants.Coupling.DC
 			else:
 				self.task.ai_channels.all.ai_coupling = nidaqmx.constants.Coupling.AC
