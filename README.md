@@ -14,7 +14,7 @@ Here's a simple example. More to come.
 import nidaq as daq # data acquisition
 import NIDAQconstants as constants # constants for coupling and excitation types
 
-myTask = daq.singlechannel(physical_channel="Dev3/ai0",excitation=daq.constants['excitation']['voltage'],number_of_samples=1024,coupling=daq.constants['coupling']['AC'])
+myTask = daq.singlechannel_read(physical_channel="Dev3/ai0",excitation=constants.excitation.voltage,number_of_samples=1024,coupling=constants.coupling.AC)
 
 data = myTask.read() # returns an array of volts, I think
 ```

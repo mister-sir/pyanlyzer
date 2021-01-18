@@ -1,7 +1,7 @@
 import nidaqmx # If it's already imported, we're good to go
 import NIDAQconstants as constants # constants for coupling and excitation types
 
-class singlechannel:
+class singlechannel_read:
 	def __init__(self, physical_channel, sample_rate, excitation, number_of_samples, coupling):
 		# Validate (half-assedly) if the name contains a useful physical channel for us
 		self.name = str(physical_channel)
