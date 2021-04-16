@@ -11,8 +11,8 @@ Download the repository and open a command prompt inside it. Run `py -m pip inst
 Here's a simple example. More to come.
 
 ```python
-import nidaq as daq # data acquisition
-import NIDAQconstants as constants # constants for coupling and excitation types
+import pyanalyzer.nidaq as daq # data acquisition
+import pyanalyzer.NIDAQconstants as constants # constants for coupling and excitation types
 
 myTask = daq.singlechannel_read(physical_channel="Dev3/ai0",excitation=constants.excitation.voltage,number_of_samples=1024,coupling=constants.coupling.AC)
 

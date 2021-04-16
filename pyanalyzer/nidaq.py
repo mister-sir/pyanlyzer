@@ -1,5 +1,5 @@
 import nidaqmx # If it's already imported, we're good to go
-import NIDAQconstants as constants # constants for coupling and excitation types
+import pyanalyzer.NIDAQconstants as constants # constants for coupling and excitation types
 
 class singlechannel_read:
 	def __init__(self, physical_channel, sample_rate, excitation, number_of_samples, coupling):
